@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
+import SearchInput from "./components/SearchInput.js";
+import "./index.css";
+import TestData from "./test_data.json";
 
-function App() {
+function App () {
+  const [serchWord, setSearchWord] = useState(""); 
+
+  function getSerchWord (value) {
+    setSearchWord(value)
+  }
+
+  function filterData () {
+    let newArr = TestData.filter((value) => {
+      if (serchWord === "") {
+        return value
+      } else if (value.first_name.toLowerCase().includes(serchWord.toLowerCase())) {
+        return value
+      }          
+    })
+  
+    return newArr
+  }  
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <SearchInput getSerchWord={getSerchWord}/>
+      <div className="testData">
+        {filterData().map((value) => {
+          return (
+            <p>{value.first_name}</p>
+          )
+        })}
+      </div>
     </div>
-  );
+  )
 }
 
 export default App;
